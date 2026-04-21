@@ -53,7 +53,7 @@ const SERVICES = [
     colSpan: 'md:col-span-4',
     rowSpan: 'md:row-span-1',
   },
-] as const;
+];
 
 /* ─── Card variants ─────────────────────────────────────────────── */
 const cardVariants = {

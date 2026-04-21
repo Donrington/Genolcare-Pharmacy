@@ -62,6 +62,7 @@ export default function TrueFocus({
 
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
 
   // Update focus rect when current index changes
