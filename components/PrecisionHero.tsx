@@ -28,9 +28,10 @@ const META_FIELDS = [
 ];
 
 function SystemMetadata() {
-  const [vals, setVals] = useState(META_FIELDS.map((f) => f.getValue()));
+  const [vals, setVals] = useState(META_FIELDS.map(() => '—'));
 
   useEffect(() => {
+    setVals(META_FIELDS.map((f) => f.getValue()));
     const id = setInterval(() => {
       setVals(META_FIELDS.map((f) => f.getValue()));
     }, 2200);
