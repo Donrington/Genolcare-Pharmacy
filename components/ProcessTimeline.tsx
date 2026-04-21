@@ -141,7 +141,7 @@ function TimelineNode({ step, stepIndex, activeIndex, isInView }: {
         {/* Pulse ring */}
         <motion.div
           className="absolute rounded-full"
-          style={{ width: 72, height: 72 }}
+          style={{ width: 72, height: 72, border: '1.5px solid', borderColor: cfg.borderColor }}
           animate={{
             scale: cfg.pulseScale,
             opacity: cfg.pulseOpacity,
@@ -152,7 +152,6 @@ function TimelineNode({ step, stepIndex, activeIndex, isInView }: {
             opacity: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
             borderColor: { duration: 0.8, ease: 'easeInOut' },
           }}
-          style={{ border: '1.5px solid', borderColor: cfg.borderColor }}
         />
 
         {/* Glass sphere */}
