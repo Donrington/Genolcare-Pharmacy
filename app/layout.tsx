@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { Dancing_Script } from 'next/font/google';
 import PillNav from '@/components/PillNav';
 import BackToTop from '@/components/BackToTop';
+import ClinicalAIOverlay from '@/components/ClinicalAIOverlay';
 import './globals.css';
 
 const geist = Geist({
@@ -81,6 +82,7 @@ export default function RootLayout({
         />
         {children}
         <BackToTop />
+        <ClinicalAIOverlay />
       </body>
     </html>
   );
