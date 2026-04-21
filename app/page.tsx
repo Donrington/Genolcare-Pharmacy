@@ -1,0 +1,24 @@
+import HeroSection from '@/components/HeroSection';
+import EthosSection from '@/components/EthosSection';
+import ServicesShowcase from '@/components/ServicesShowcase';
+import ProcessTimeline from '@/components/ProcessTimeline';
+import FounderAuthority from '@/components/FounderAuthority';
+import FAQSection from '@/components/FAQSection';
+import Footer from '@/components/Footer';
+
+export default function Home() {
+  return (
+    <>
+      {/* Relative z-10 so content slides over the footer on scroll */}
+      <div className="relative z-10">
+        <HeroSection />
+        <EthosSection />
+        <ServicesShowcase />
+        <ProcessTimeline />
+        <FounderAuthority />
+        <FAQSection />
+      </div>
+      <Footer />
+    </>
+  );
+}
