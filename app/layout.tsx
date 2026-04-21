@@ -22,10 +22,122 @@ const dancingScript = Dancing_Script({
   weight: ['400', '600', '700'],
 });
 
+const BASE_URL = 'https://genolcare-pharmacy.vercel.app';
+
 export const metadata: Metadata = {
-  title: 'Genolcare - Clinical Excellence. Precision Care.',
+  metadataBase: new URL(BASE_URL),
+
+  title: {
+    default: 'Genolcare Pharmacy — Clinical Excellence. Precision Care. | Abuja, Nigeria',
+    template: '%s | Genolcare Pharmacy',
+  },
+
   description:
-    'Elevating community health in Abuja with 15+ years of specialist expertise. Genuine medications, expert consultations, and seamless service.',
+    "Genolcare Pharmacy is Abuja's premier specialist pharmaceutical practice — founded by a WAPCP Fellow and FPCPharm with 15+ years in infectious disease pharmacology. Genuine medications, expert clinical consultations, cold-chain handling, and precision prescription fulfillment in Wuse District, Abuja FCT.",
+
+  keywords: [
+    'pharmacy Abuja',
+    'pharmacist Abuja Nigeria',
+    'prescription filling Abuja',
+    'clinical consultation Abuja',
+    'specialist pharmacy Nigeria',
+    'genuine medications Abuja',
+    'Wuse District pharmacy',
+    'infectious disease pharmacology Nigeria',
+    'WAPCP Fellow pharmacist',
+    'FPCPharm Abuja',
+    'cold chain medications Abuja',
+    'OTC medications Nigeria',
+    'wellness products Abuja',
+    'Genolcare Pharmacy',
+    'community pharmacy FCT',
+    'antimicrobial stewardship Nigeria',
+  ],
+
+  authors: [{ name: 'Genolcare Pharmacy', url: BASE_URL }],
+  creator: 'Genolcare Pharmacy',
+  publisher: 'Genolcare Pharmacy',
+
+  category: 'Healthcare & Pharmacy',
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  icons: {
+    icon: [
+      { url: '/genolcare_logo.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/genolcare_logo.png', type: 'image/png' },
+    ],
+    shortcut: '/genolcare_logo.png',
+  },
+
+  openGraph: {
+    type: 'website',
+    locale: 'en_NG',
+    alternateLocale: 'en_US',
+    url: BASE_URL,
+    siteName: 'Genolcare Pharmacy',
+    title: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
+    description:
+      'Abuja\'s premier specialist pharmacy. WAPCP-certified clinical consultations, genuine medications, precision prescription fulfillment, and cold-chain handling — 15+ years of trusted expertise in Wuse District, Abuja FCT.',
+    images: [
+      {
+        url: '/api/og',
+        width: 1200,
+        height: 630,
+        alt: 'Genolcare Pharmacy — Clinical Excellence. Precision Care. Abuja, Nigeria.',
+        type: 'image/png',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    site: '@genolcare',
+    creator: '@genolcare',
+    title: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
+    description:
+      'Abuja\'s premier specialist pharmacy. 15+ years of expertise, WAPCP-certified consultations, and 100% genuine medications. Wuse District, Abuja FCT.',
+    images: [
+      {
+        url: '/api/og',
+        alt: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
+      },
+    ],
+  },
+
+  alternates: {
+    canonical: BASE_URL,
+  },
+
+  verification: {
+    google: '',
+  },
+
+  other: {
+    'geo.region': 'NG-FC',
+    'geo.placename': 'Abuja',
+    'geo.position': '9.0765;7.3986',
+    'ICBM': '9.0765, 7.3986',
+    'og:locality': 'Abuja',
+    'og:region': 'FCT',
+    'og:country-name': 'Nigeria',
+    'business:contact_data:locality': 'Abuja',
+    'business:contact_data:region': 'FCT',
+    'business:contact_data:country_name': 'Nigeria',
+    'business:contact_data:phone_number': '+234 912 345 6789',
+  },
 };
 
 export default function RootLayout({
@@ -37,11 +149,135 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} ${geistMono.variable} ${dancingScript.variable}`}>
       <head>
         <link rel="stylesheet" href="/lineicons/lineicons-free.css" />
+        <link rel="canonical" href={BASE_URL} />
+        <meta name="theme-color" content="#0F2660" />
+        <meta name="msapplication-TileColor" content="#0F2660" />
+        <meta name="msapplication-TileImage" content="/genolcare_logo.png" />
+        <meta name="application-name" content="Genolcare Pharmacy" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Genolcare" />
+        <meta name="format-detection" content="telephone=yes" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': ['Pharmacy', 'LocalBusiness', 'MedicalBusiness'],
+                  '@id': `${BASE_URL}/#pharmacy`,
+                  name: 'Genolcare Pharmacy',
+                  alternateName: 'Genolcare Pharmacy & Clinical Consulting',
+                  description:
+                    'Specialist pharmaceutical practice in Wuse District, Abuja FCT, Nigeria. Founded by a WAPCP Fellow and FPCPharm with over 15 years of expertise in infectious disease pharmacology.',
+                  url: BASE_URL,
+                  logo: {
+                    '@type': 'ImageObject',
+                    url: `${BASE_URL}/genolcare_logo.png`,
+                    width: 200,
+                    height: 200,
+                  },
+                  image: `${BASE_URL}/api/og`,
+                  telephone: '+234912345678',
+                  address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: 'Wuse District',
+                    addressLocality: 'Abuja',
+                    addressRegion: 'FCT',
+                    addressCountry: 'NG',
+                  },
+                  geo: {
+                    '@type': 'GeoCoordinates',
+                    latitude: 9.0765,
+                    longitude: 7.3986,
+                  },
+                  openingHoursSpecification: [
+                    {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                      opens: '08:00',
+                      closes: '21:00',
+                    },
+                    {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: 'Saturday',
+                      opens: '09:00',
+                      closes: '20:00',
+                    },
+                    {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: 'Sunday',
+                      opens: '12:00',
+                      closes: '18:00',
+                    },
+                  ],
+                  priceRange: 'NGN',
+                  currenciesAccepted: 'NGN',
+                  paymentAccepted: 'Cash, Bank Transfer',
+                  hasMap: 'https://maps.google.com/?q=Wuse+District+Abuja+Nigeria',
+                  sameAs: [],
+                  aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: '4.9',
+                    reviewCount: '87',
+                    bestRating: '5',
+                  },
+                  founder: {
+                    '@type': 'Person',
+                    name: 'Genolcare Founder',
+                    jobTitle: 'Clinical Pharmacist',
+                    hasCredential: ['FPCPharm', 'WAPCP Fellow'],
+                    knowsAbout: ['Infectious Disease Pharmacology', 'Antimicrobial Stewardship', 'Clinical Pharmacy'],
+                  },
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': `${BASE_URL}/#website`,
+                  url: BASE_URL,
+                  name: 'Genolcare Pharmacy',
+                  description: 'Clinical Excellence. Precision Care.',
+                  publisher: { '@id': `${BASE_URL}/#pharmacy` },
+                  potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                      '@type': 'EntryPoint',
+                      urlTemplate: `${BASE_URL}/?q={search_term_string}`,
+                    },
+                    'query-input': 'required name=search_term_string',
+                  },
+                },
+                {
+                  '@type': 'WebPage',
+                  '@id': `${BASE_URL}/#webpage`,
+                  url: BASE_URL,
+                  name: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
+                  isPartOf: { '@id': `${BASE_URL}/#website` },
+                  about: { '@id': `${BASE_URL}/#pharmacy` },
+                  description:
+                    'Abuja\'s premier specialist pharmacy offering precision prescription filling, WAPCP-certified clinical consultations, genuine OTC medications, and curated wellness products.',
+                  breadcrumb: {
+                    '@type': 'BreadcrumbList',
+                    itemListElement: [
+                      {
+                        '@type': 'ListItem',
+                        position: 1,
+                        name: 'Home',
+                        item: BASE_URL,
+                      },
+                    ],
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body>
         <PillNav
           logo="/genolcare_logo.png"
-          logoAlt="Genolcare Logo"
+          logoAlt="Genolcare Pharmacy Logo"
           items={[
             { label: 'Home', href: '/' },
             {
