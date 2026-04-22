@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useCallback } from 'react';
+import Link from 'next/link';
 import {
   motion,
   useMotionValue,
@@ -12,6 +13,7 @@ const SERVICES = [
   {
     id: 'prescription',
     index: '01',
+    href: '/services/prescription-filling',
     label: 'Prescription Filling',
     title: 'Precision Fulfillment',
     subtitle: 'Rigorous specialist-led processing of specialist prescriptions.',
@@ -23,6 +25,7 @@ const SERVICES = [
   {
     id: 'consultation',
     index: '02',
+    href: '/services/consultations',
     label: 'Health Consultations',
     title: 'Clinical Consulting',
     subtitle: 'Expert advice from WAPCP Fellows.',
@@ -34,6 +37,7 @@ const SERVICES = [
   {
     id: 'otc',
     index: '03',
+    href: '/services/otc-medications',
     label: 'OTC Medications',
     title: 'Immediate Care',
     subtitle: 'Genuine OTC medications for daily health.',
@@ -45,6 +49,7 @@ const SERVICES = [
   {
     id: 'wellness',
     index: '04',
+    href: '/services/wellness',
     label: 'Wellness Products',
     title: 'Holistic Health',
     subtitle: 'Curated vitamins and premium wellness essentials.',
@@ -110,9 +115,13 @@ function SpotlightCard({ service, index }: SpotlightCardProps) {
   const spotlight = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(109,190,69,0.12), transparent 70%)`;
 
   return (
+    <Link
+      href={service.href}
+      className={`${service.colSpan} ${service.rowSpan} col-span-1 relative block h-full`}
+    >
     <motion.div
       ref={cardRef}
-      className={`${service.colSpan} ${service.rowSpan} col-span-1 relative`}
+      className="relative h-full"
       initial={{ opacity: 0, y: 24, scale: 1 }}
       whileInView={{ opacity: 1, y: 0 }}
       whileHover="hover"
@@ -275,6 +284,7 @@ function SpotlightCard({ service, index }: SpotlightCardProps) {
         )}
       </div>
     </motion.div>
+    </Link>
   );
 }
 

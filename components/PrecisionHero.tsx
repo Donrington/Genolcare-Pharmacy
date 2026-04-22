@@ -44,32 +44,32 @@ function SystemMetadata() {
       initial={{ opacity: 0, y: 16, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 1.4, ease: EASE }}
-      className="absolute bottom-6 right-6 z-20
+      className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20
         backdrop-blur-2xl bg-black/40 border border-white/10
-        rounded-2xl px-5 py-4 min-w-[190px]
+        rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-5 sm:py-4 min-w-[130px] sm:min-w-[190px]
         shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
         <motion.div
           animate={{ opacity: [1, 0.2, 1] }}
           transition={{ duration: 1.4, repeat: Infinity }}
-          className="w-1.5 h-1.5 rounded-full bg-genolcare-green"
+          className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-genolcare-green flex-shrink-0"
         />
-        <span className="font-mono text-[8px] tracking-[0.25em] text-white/40 uppercase">
+        <span className="font-mono text-[7px] sm:text-[8px] tracking-[0.2em] sm:tracking-[0.25em] text-white/40 uppercase">
           System Metadata
         </span>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-1 sm:space-y-1.5">
         {META_FIELDS.map((field, i) => (
-          <div key={field.label} className="flex items-center justify-between gap-6">
-            <span className="font-mono text-[9px] tracking-[0.18em] text-white/40 uppercase">
+          <div key={field.label} className="flex items-center justify-between gap-3 sm:gap-6">
+            <span className="font-mono text-[7px] sm:text-[9px] tracking-[0.15em] sm:tracking-[0.18em] text-white/40 uppercase">
               {field.label}
             </span>
             <motion.span
               key={vals[i]}
               initial={{ opacity: 0.4 }}
               animate={{ opacity: 1 }}
-              className="font-mono text-[9px] tracking-[0.12em] text-genolcare-green font-semibold"
+              className="font-mono text-[7px] sm:text-[9px] tracking-[0.1em] sm:tracking-[0.12em] text-genolcare-green font-semibold"
             >
               {vals[i]}
             </motion.span>

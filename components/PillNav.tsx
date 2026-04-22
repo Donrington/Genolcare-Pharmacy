@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import Image from 'next/image';
+import ContactModal from './ContactModal';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface SubItem {
@@ -241,6 +242,8 @@ export default function PillNav({ logo, logoAlt = 'Logo', items }: PillNavProps)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navItems = items.slice(0, -1);
   const ctaItem = items[items.length - 1];
 
@@ -266,11 +269,12 @@ export default function PillNav({ logo, logoAlt = 'Logo', items }: PillNavProps)
           </div>
 
           {ctaItem && (
-            <Link href={ctaItem.href}>
-              <button className="ml-3 px-5 py-2 rounded-full bg-genolcare-blue text-white text-sm font-medium font-satoshi shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
-                {ctaItem.label}
-              </button>
-            </Link>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="ml-3 px-5 py-2 rounded-full bg-genolcare-blue text-white text-sm font-medium font-satoshi shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
+            >
+              {ctaItem.label}
+            </button>
           )}
         </nav>
       </LayoutGroup>
@@ -361,6 +365,13 @@ export default function PillNav({ logo, logoAlt = 'Logo', items }: PillNavProps)
                           )}
                         </AnimatePresence>
                       </div>
+                    ) : item === ctaItem ? (
+                      <button
+                        onClick={() => { setIsMenuOpen(false); setIsModalOpen(true); }}
+                        className="block w-full text-left font-satoshi text-4xl font-bold py-1 text-genolcare-blue hover:text-genolcare-blue/80 transition-colors duration-300"
+                      >
+                        {item.label}
+                      </button>
                     ) : (
                       <Link
                         href={item.href}
@@ -391,6 +402,8 @@ export default function PillNav({ logo, logoAlt = 'Logo', items }: PillNavProps)
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }
