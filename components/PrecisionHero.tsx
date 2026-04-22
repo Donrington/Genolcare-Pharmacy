@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
 } from 'react';
+import ContactModal from './ContactModal';
 import {
   motion,
   useScroll,
@@ -113,153 +114,236 @@ function ScrollIndicator() {
   );
 }
 
-/* ─── Magnetic TrueFocus for "PRECISION" ────────────────────────── */
-interface MagneticFocusProps {
+/* ─── Unified cycling TrueFocus for PRECISION + FULFILLMENT ────── */
+interface PrecisionWordsProps {
   isRevealed: boolean;
+  fillOpacity: ReturnType<typeof useTransform<number, number>>;
+  outlineOpacity: ReturnType<typeof useTransform<number, number>>;
 }
 
-function MagneticPrecision({ isRevealed }: MagneticFocusProps) {
-  const wordRef = useRef<HTMLSpanElement>(null);
+function PrecisionWords({ isRevealed, fillOpacity, outlineOpacity }: PrecisionWordsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const word0Ref = useRef<HTMLSpanElement>(null); // PRECISION
+  const word1Ref = useRef<HTMLSpanElement>(null); // FULFILLMENT
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [rects, setRects] = useState([
+    { x: 0, y: 0, w: 0, h: 0 },
+    { x: 0, y: 0, w: 0, h: 0 },
+  ]);
+  const [proximity, setProximity] = useState(1);
+  const [fontsReady, setFontsReady] = useState(false);
 
   /* Magnetic tilt */
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-1, 1], [6, -6]), { stiffness: 180, damping: 22 });
-  const rotateY = useSpring(useTransform(mouseX, [-1, 1], [-6, 6]), { stiffness: 180, damping: 22 });
+  const rotateX = useSpring(useTransform(mouseY, [-1, 1], [4, -4]), { stiffness: 160, damping: 24 });
+  const rotateY = useSpring(useTransform(mouseX, [-1, 1], [-4, 4]), { stiffness: 160, damping: 24 });
 
-  /* Focus frame position */
-  const [frameRect, setFrameRect] = useState({ x: 0, y: 0, w: 0, h: 0 });
-  const [proximity, setProximity] = useState(1); // 1 = far, 0 = close
-
-  const updateFrameRect = useCallback(() => {
-    const el = wordRef.current;
-    const cont = containerRef.current;
-    if (!el || !cont) return;
-    const elRect = el.getBoundingClientRect();
-    const contRect = cont.getBoundingClientRect();
-    setFrameRect({
-      x: elRect.left - contRect.left,
-      y: elRect.top - contRect.top,
-      w: elRect.width,
-      h: elRect.height,
-    });
+  /* Wait for fonts before first measurement */
+  useEffect(() => {
+    document.fonts.ready.then(() => setFontsReady(true));
   }, []);
 
-  useEffect(() => {
-    updateFrameRect();
-    window.addEventListener('resize', updateFrameRect);
-    return () => window.removeEventListener('resize', updateFrameRect);
-  }, [updateFrameRect, isRevealed]);
+  /* Core measurement — uses offsetLeft/offsetTop traversal for accuracy across nested divs */
+  const measure = useCallback(() => {
+    const cont = containerRef.current;
+    const els = [word0Ref.current, word1Ref.current];
+    if (!cont || els.some((e) => !e)) return;
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const el = wordRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const maxDist = 240;
-      const norm = Math.min(dist / maxDist, 1);
-      setProximity(norm);
-      if (norm < 1) {
-        mouseX.set(dx / (rect.width / 2));
-        mouseY.set(dy / (rect.height / 2));
+    const measured = els.map((el) => {
+      if (!el) return { x: 0, y: 0, w: 0, h: 0 };
+      // Walk offsetParent chain up to container for reliable nested positioning
+      let x = 0, y = 0;
+      let cur: HTMLElement | null = el;
+      while (cur && cur !== cont) {
+        x += cur.offsetLeft;
+        y += cur.offsetTop;
+        cur = cur.offsetParent as HTMLElement | null;
       }
+      return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+    });
+    setRects(measured);
+  }, []);
+
+  /* Re-measure when fonts load or reveal happens */
+  useEffect(() => {
+    if (!fontsReady || !isRevealed) return;
+    measure();
+  }, [fontsReady, isRevealed, measure]);
+
+  /* ResizeObserver so any layout shift re-measures */
+  useEffect(() => {
+    if (!fontsReady) return;
+    const obs = new ResizeObserver(measure);
+    [word0Ref.current, word1Ref.current].forEach((el) => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, [fontsReady, measure]);
+
+  /* Resize */
+  useEffect(() => {
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+
+  /* Cycle every 2.4s */
+  useEffect(() => {
+    if (!isRevealed) return;
+    const id = setInterval(() => setActiveIndex((p) => (p + 1) % 2), 2400);
+    return () => clearInterval(id);
+  }, [isRevealed]);
+
+  /* Magnetic cursor */
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const cont = containerRef.current;
+      if (!cont) return;
+      const r = cont.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      const norm = Math.min(Math.sqrt(dx * dx + dy * dy) / 320, 1);
+      setProximity(norm);
+      mouseX.set(dx / (r.width / 2));
+      mouseY.set(dy / (r.height / 2));
     };
-    const handleMouseLeave = () => {
-      mouseX.set(0);
-      mouseY.set(0);
-      setProximity(1);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-    };
+    const onLeave = () => { mouseX.set(0); mouseY.set(0); setProximity(1); };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseleave', onLeave);
+    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseleave', onLeave); };
   }, [mouseX, mouseY]);
 
-  const dynamicBlur = proximity * 0; // always sharp when focused
+  const BLUR = 8;
+  const PAD = 16;
   const cornerColor = '#1A3B8B';
-  const glowIntensity = `rgba(26,59,139,${0.3 + (1 - proximity) * 0.5})`;
+  const glow = `rgba(26,59,139,${0.5 + (1 - proximity) * 0.5})`;
+  const fr = rects[activeIndex];
 
   return (
     <motion.div
       ref={containerRef}
-      className="relative inline-block"
-      style={{ perspective: 800, rotateX, rotateY }}
+      className="relative"
+      style={{ perspective: 900, rotateX, rotateY }}
     >
-      <motion.span
-        ref={wordRef}
-        className="relative block font-satoshi font-black text-gray-900 leading-none select-none"
-        style={{
-          fontSize: 'clamp(4rem, 10vw, 9rem)',
-          filter: `blur(${dynamicBlur}px)`,
-          transition: 'filter 0.3s ease',
-        }}
-        initial={{ filter: 'blur(18px)', opacity: 0 }}
-        animate={isRevealed ? { filter: 'blur(0px)', opacity: 1 } : {}}
-        transition={{ duration: 1.2, ease: EASE }}
-      >
-        PRECISION
-      </motion.span>
+      {/* PRECISION — inline-block so offsetWidth = text width, not container width */}
+      <div className="leading-none">
+        <motion.span
+          ref={word0Ref}
+          className="inline-block font-satoshi font-black text-gray-900 leading-none select-none"
+          style={{
+            fontSize: 'clamp(2.2rem, 9vw, 8rem)',
+            filter: activeIndex === 0 ? 'blur(0px)' : `blur(${BLUR}px)`,
+            transition: 'filter 0.5s ease',
+            willChange: 'filter',
+          }}
+          initial={{ opacity: 0, filter: 'blur(18px)' }}
+          animate={isRevealed ? { opacity: 1, filter: 'blur(0px)' } : {}}
+          transition={{ duration: 1.2, ease: EASE }}
+        >
+          PRECISION
+        </motion.span>
+      </div>
 
-      {/* Magnetic focus frame */}
+      {/* FULFILLMENT — inline-block so offsetWidth = text width */}
+      <div className="relative mt-1 md:mt-2 leading-none select-none">
+        {/* Ref span: inline-block, always in DOM at full opacity for accurate measurement */}
+        <span
+          ref={word1Ref}
+          className="inline-block font-satoshi font-black"
+          style={{
+            fontSize: 'clamp(2.2rem, 9vw, 8rem)', 
+            WebkitTextStroke: '2px #374151',
+            color: 'transparent',
+            filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
+            transition: 'filter 0.5s ease',
+            willChange: 'filter',
+          }}
+        >
+          FULFILLMENT
+        </span>
+
+        {/* Solid fill — scroll-driven */}
+        <motion.span
+          className="absolute top-0 left-0 inline-block font-satoshi font-black pointer-events-none"
+          style={{
+            fontSize: 'clamp(2.2rem, 9vw, 8rem)',
+            WebkitTextStroke: '2px #374151',
+            color: '#1A3B8B',
+            filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
+            transition: 'filter 0.5s ease',
+            opacity: fillOpacity,
+          }}
+        >
+          FULFILLMENT
+        </motion.span>
+
+        {/* Outline fade — scroll-driven */}
+        <motion.span
+          className="absolute top-0 left-0 inline-block font-satoshi font-black pointer-events-none"
+          style={{
+            fontSize: 'clamp(2.2rem, 9vw, 8rem)', 
+            WebkitTextStroke: '2px #374151',
+            color: 'transparent',
+            filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
+            transition: 'filter 0.5s ease',
+            opacity: outlineOpacity,
+          }}
+        >
+          FULFILLMENT
+        </motion.span>
+
+        {/* Entrance white wipe */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ scaleX: 1 }}
+          animate={isRevealed ? { scaleX: 0 } : {}}
+          transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
+          style={{ originX: 0, background: 'white' }}
+        />
+      </div>
+
+      {/* Cycling focus frame — springs to active word's exact measured rect */}
       <motion.div
         className="absolute pointer-events-none"
         animate={{
-          x: frameRect.x - 12,
-          y: frameRect.y - 12,
-          width: frameRect.w + 24,
-          height: frameRect.h + 24,
-          opacity: isRevealed ? 1 : 0,
+          x: fr.x - PAD,
+          y: fr.y - PAD,
+          width: fr.w + PAD * 2,
+          height: fr.h + PAD * 2,
+          opacity: isRevealed && fr.w > 0 ? 1 : 0,
         }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ type: 'spring', stiffness: 200, damping: 26 }}
         style={{ top: 0, left: 0 }}
       >
-        {/* Corner brackets */}
         {[
-          { top: 0, left: 0, borderTop: true, borderLeft: true },
-          { top: 0, right: 0, borderTop: true, borderRight: true },
-          { bottom: 0, left: 0, borderBottom: true, borderLeft: true },
-          { bottom: 0, right: 0, borderBottom: true, borderRight: true },
-        ].map((corner, i) => (
-          <motion.div
+          { top: 0, left: 0, bT: true, bL: true },
+          { top: 0, right: 0, bT: true, bR: true },
+          { bottom: 0, left: 0, bB: true, bL: true },
+          { bottom: 0, right: 0, bB: true, bR: true },
+        ].map((c, i) => (
+          <div
             key={i}
             className="absolute"
-            animate={{ opacity: isRevealed ? 1 : 0 }}
-            transition={{ delay: 1.0 + i * 0.06 }}
             style={{
-              ...(corner.top !== undefined ? { top: corner.top } : {}),
-              ...(corner.bottom !== undefined ? { bottom: corner.bottom } : {}),
-              ...(corner.left !== undefined ? { left: corner.left } : {}),
-              ...(corner.right !== undefined ? { right: corner.right } : {}),
-              width: 20,
-              height: 20,
-              borderTop: corner.borderTop ? `2.5px solid ${cornerColor}` : undefined,
-              borderBottom: corner.borderBottom ? `2.5px solid ${cornerColor}` : undefined,
-              borderLeft: corner.borderLeft ? `2.5px solid ${cornerColor}` : undefined,
-              borderRight: corner.borderRight ? `2.5px solid ${cornerColor}` : undefined,
+              ...(c.top    !== undefined ? { top: c.top }       : {}),
+              ...(c.bottom !== undefined ? { bottom: c.bottom } : {}),
+              ...(c.left   !== undefined ? { left: c.left }     : {}),
+              ...(c.right  !== undefined ? { right: c.right }   : {}),
+              width: 22, height: 22,
+              borderTop:    c.bT ? `3px solid ${cornerColor}` : undefined,
+              borderBottom: c.bB ? `3px solid ${cornerColor}` : undefined,
+              borderLeft:   c.bL ? `3px solid ${cornerColor}` : undefined,
+              borderRight:  c.bR ? `3px solid ${cornerColor}` : undefined,
               borderRadius: 3,
-              filter: `drop-shadow(0 0 6px ${glowIntensity})`,
-              transition: 'filter 0.2s ease',
+              filter: `drop-shadow(0 0 8px ${glow})`,
             }}
           />
         ))}
-
-        {/* Proximity glow underline */}
-        <motion.div
-          className="absolute bottom-0 left-0 h-px"
+        <div
+          className="absolute bottom-0 left-0 h-px w-full"
           style={{
             background: `linear-gradient(90deg, transparent, ${cornerColor}, transparent)`,
-            opacity: 1 - proximity,
+            opacity: Math.max(0, 1 - proximity),
           }}
-          animate={{ width: frameRect.w + 24 }}
-          transition={{ duration: 0.4 }}
         />
       </motion.div>
     </motion.div>
@@ -271,6 +355,7 @@ export default function PrecisionHero() {
   const heroRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [shutterDone, setShutterDone] = useState(false);
 
   /* Scroll-based transforms */
@@ -321,45 +406,12 @@ export default function PrecisionHero() {
             </span>
           </motion.div>
 
-          {/* "PRECISION" — magnetic TrueFocus */}
-          <MagneticPrecision isRevealed={isRevealed} />
-
-          {/* "FULFILLMENT" — outline → solid on scroll */}
-          <div className="relative mt-1 md:mt-2 leading-none select-none overflow-hidden">
-            {/* Outline layer */}
-            <motion.span
-              className="block font-satoshi font-black text-transparent"
-              style={{
-                fontSize: 'clamp(4rem, 10vw, 9rem)',
-                WebkitTextStroke: '1.5px #d1d5db',
-                opacity: outlineOpacity,
-              }}
-            >
-              FULFILLMENT
-            </motion.span>
-            {/* Solid fill layer (absolute, same position) */}
-            <motion.span
-              className="absolute inset-0 block font-satoshi font-black"
-              style={{
-                fontSize: 'clamp(4rem, 10vw, 9rem)',
-                color: '#1A3B8B',
-                opacity: fillOpacity,
-              }}
-              initial={{ opacity: 0 }}
-              animate={isRevealed ? { opacity: 0 } : {}} // controlled by scroll
-            >
-              FULFILLMENT
-            </motion.span>
-
-            {/* Entrance animation underlay */}
-            <motion.div
-              className="absolute inset-0"
-              initial={{ scaleX: 1 }}
-              animate={isRevealed ? { scaleX: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
-              style={{ originX: 0, background: 'white' }}
-            />
-          </div>
+          {/* PRECISION + FULFILLMENT — unified cycling TrueFocus */}
+          <PrecisionWords
+            isRevealed={isRevealed}
+            fillOpacity={fillOpacity}
+            outlineOpacity={outlineOpacity}
+          />
 
           {/* Descriptor text */}
           <motion.div
@@ -382,8 +434,8 @@ export default function PrecisionHero() {
             transition={{ duration: 0.8, delay: 0.95, ease: EASE }}
             className="mt-10 flex items-center gap-6 flex-wrap"
           >
-            <motion.a
-              href="/contact"
+            <motion.button
+              onClick={() => setIsModalOpen(true)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-3 bg-genolcare-blue text-white
@@ -396,7 +448,7 @@ export default function PrecisionHero() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
-            </motion.a>
+            </motion.button>
 
             <motion.a
               href="/#process"
@@ -511,6 +563,8 @@ export default function PrecisionHero() {
 
       {/* Scroll indicator */}
       <ScrollIndicator />
+
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Dancing_Script } from 'next/font/google';
 import PillNav from '@/components/PillNav';
+import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import ClinicalAIOverlay from '@/components/ClinicalAIOverlay';
 import './globals.css';
@@ -317,6 +318,7 @@ export default function RootLayout({
           ]}
         />
         {children}
+        <Footer />
         <BackToTop />
         <ClinicalAIOverlay />
       </body>
