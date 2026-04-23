@@ -292,7 +292,7 @@ export default function RootLayout({
                   iconKey: 'rx',
                 },
                 {
-                  label: 'Health Consultations',
+                  label: 'Clinical Consulting',
                   href: '/services/consultations',
                   description: 'One-on-one sessions with WAPCP-certified clinical Fellows.',
                   iconKey: 'consult',

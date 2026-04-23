@@ -194,12 +194,12 @@ const StepBlock = ({ step, index }: { step: { title: string; subtitle: string; d
           }}
           className="mt-8 md:mt-12 flex flex-col md:flex-row md:items-start gap-4 md:gap-16 relative z-30"
         >
-          <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+          <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: index * 0.1 } } }}>
              <span className="font-mono text-xs md:text-sm tracking-[0.2em] text-[#6DBE45] uppercase bg-[#050505]/50 px-4 py-2 rounded-full border border-[#6DBE45]/20 backdrop-blur-md">
                 {step.subtitle}
              </span>
           </motion.div>
-          <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }} className="max-w-2xl">
+          <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: index * 0.1 + 0.1 } } }} className="max-w-2xl">
              <p className="text-xl md:text-3xl text-white/80 font-light leading-relaxed drop-shadow-lg">
                 {step.desc}
              </p>
@@ -221,7 +221,7 @@ const steps = [
   {
     title: "02. ANALYZE",
     subtitle: "Diagnostic Evaluation",
-    desc: "Synthesizing data against WAPCP Fellows' evidence-based guidelines."
+    desc: "Synthesizing data against WAPCP Fellows&apos; evidence-based guidelines."
   },
   {
     title: "03. FORMULATE",

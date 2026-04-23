@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import ContactModal from '@/components/ContactModal';
 
 /* ─── WebGL Viscous Liquid Shader ───────────────────────────────────────── */
 function LiquidShader() {
@@ -138,6 +139,7 @@ function LiquidShader() {
 /* ─── Main Component ────────────────────────────────────────────────────── */
 export default function SecureInsightCTA() {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Magnetic Button Physics
   const buttonX = useSpring(0, { stiffness: 150, damping: 15, mass: 0.5 });
@@ -226,6 +228,7 @@ export default function SecureInsightCTA() {
         {/* The Liquid Morph CTA */}
         <motion.button 
           ref={buttonRef}
+          onClick={() => setIsModalOpen(true)}
           style={{ x: buttonX, y: buttonY, scale }}
           whileHover={{ scale: 1.08 }} // Expands slightly further on true hover
           whileTap={{ scale: 0.92, filter: "brightness(1.5)" }} // Clean liquid snap
@@ -243,6 +246,9 @@ export default function SecureInsightCTA() {
         </motion.button>
 
       </div>
+
+      {/* The Inquiry Portal */}
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

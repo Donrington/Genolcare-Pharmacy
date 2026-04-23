@@ -2,6 +2,7 @@
 
 import { useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   motion,
   useMotionValue,
@@ -26,11 +27,11 @@ const SERVICES = [
     id: 'consultation',
     index: '02',
     href: '/services/consultations',
-    label: 'Health Consultations',
+    label: 'Clinical Consulting',
     title: 'Clinical Consulting',
     subtitle: 'Expert advice from WAPCP Fellows.',
     hero: false,
-    image: '/pov_health_consultation.png',
+    image: '/TheEngagement.png',
     colSpan: 'md:col-span-4',
     rowSpan: 'md:row-span-1',
   },
@@ -147,10 +148,11 @@ function SpotlightCard({ service, index }: SpotlightCardProps) {
             {/* Image Placeholder or Actual Image */}
             <div className="relative w-full aspect-video bg-gradient-to-br from-gray-100 to-gray-50 rounded-t-[2rem] overflow-hidden flex-shrink-0 group">
               {'image' in service && service.image ? (
-                <img 
+                <Image 
                   src={service.image} 
                   alt={service.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               ) : (
                 <>
@@ -225,10 +227,11 @@ function SpotlightCard({ service, index }: SpotlightCardProps) {
             {/* Background Content */}
             {'image' in service && service.image ? (
               <div className="absolute inset-0 z-0 overflow-hidden">
-                <img 
+                <Image 
                   src={service.image} 
                   alt={service.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-gray-900/20" />
               </div>
