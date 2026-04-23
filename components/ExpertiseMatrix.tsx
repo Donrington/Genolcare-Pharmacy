@@ -149,6 +149,7 @@ interface LiquidCardProps {
 
 function LiquidCard({ className, children, imageSrc }: LiquidCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isTapped, setIsTapped] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Magnetic tilt physics
@@ -168,16 +169,24 @@ function LiquidCard({ className, children, imageSrc }: LiquidCardProps) {
     y.set((py / rect.height) - 0.5);
   }
 
+  const toggleTapped = () => {
+    // Only toggle on mobile/touch devices or small screens
+    if (window.innerWidth < 768) {
+      setIsTapped(!isTapped);
+    }
+  };
+
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => { x.set(0); y.set(0); }}
+      onClick={toggleTapped}
       initial="initial"
       whileHover="hover"
-      animate="rest"
+      animate={isTapped ? "hover" : "rest"}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`group relative rounded-[2rem] p-[1px] bg-[#0a0a0a]/40 shadow-[0_8px_32px_rgba(0,0,0,0.15)] hover:shadow-[0_16px_48px_rgba(26,59,139,0.2)] transition-shadow duration-500 will-change-transform ${className}`}
+      className={`group relative rounded-[2rem] p-[1px] bg-[#0a0a0a]/40 shadow-[0_8px_32px_rgba(0,0,0,0.15)] hover:shadow-[0_16px_48px_rgba(26,59,139,0.2)] transition-shadow duration-500 will-change-transform cursor-pointer ${className}`}
     >
       {/* Liquid Laser Border (Cursor Follower) */}
       <motion.div
