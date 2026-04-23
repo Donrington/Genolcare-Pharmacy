@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useSpring } from 'framer-motion';
 import ContactModal from '@/components/ContactModal';
 
 /* ─── WebGL Viscous Liquid Shader ───────────────────────────────────────── */
