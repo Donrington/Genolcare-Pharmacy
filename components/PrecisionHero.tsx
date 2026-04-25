@@ -422,7 +422,7 @@ export default function PrecisionHero() {
           >
             <div className="w-10 h-px bg-genolcare-green mb-5" />
             <p className="font-satoshi text-gray-500 text-base sm:text-lg leading-relaxed">
-              Multi-tier verification by a WAPCP-certified Fellow. Every prescription
+              Multi-tier verification by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow. Every prescription
               processed with specialist precision — from intake to dispensing.
             </p>
           </motion.div>

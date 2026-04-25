@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Genolcare Pharmacy is Abuja's premier specialist pharmaceutical practice — founded by a WAPCP Fellow and FPCPharm with 15+ years in infectious disease pharmacology. Genuine medications, expert clinical consultations, cold-chain handling, and precision prescription fulfillment in Wuse District, Abuja FCT.",
+    "Genolcare Pharmacy is Abuja's premier specialist pharmaceutical practice — founded by Eugene Apasi Eromosele, FPCPharm and WAPCP Fellow with 15+ years in infectious disease pharmacology. Genuine medications, expert clinical consultations, cold-chain handling, and precision prescription fulfillment in Wuse District, Abuja FCT.",
 
   keywords: [
     'pharmacy Abuja',
@@ -172,7 +172,7 @@ export default function RootLayout({
                   name: 'Genolcare Pharmacy',
                   alternateName: 'Genolcare Pharmacy & Clinical Consulting',
                   description:
-                    'Specialist pharmaceutical practice in Wuse District, Abuja FCT, Nigeria. Founded by a WAPCP Fellow and FPCPharm with over 15 years of expertise in infectious disease pharmacology.',
+                    'Specialist pharmaceutical practice in Wuse District, Abuja FCT, Nigeria. Founded by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow — with over 15 years of expertise in infectious disease pharmacology.',
                   url: BASE_URL,
                   logo: {
                     '@type': 'ImageObject',
@@ -227,7 +227,7 @@ export default function RootLayout({
                   },
                   founder: {
                     '@type': 'Person',
-                    name: 'Genolcare Founder',
+                    name: 'Eugene Apasi Eromosele',
                     jobTitle: 'Clinical Pharmacist',
                     hasCredential: ['FPCPharm', 'WAPCP Fellow'],
                     knowsAbout: ['Infectious Disease Pharmacology', 'Antimicrobial Stewardship', 'Clinical Pharmacy'],
@@ -294,7 +294,7 @@ export default function RootLayout({
                 {
                   label: 'Clinical Consulting',
                   href: '/services/consultations',
-                  description: 'One-on-one sessions with WAPCP-certified clinical Fellows.',
+                  description: 'One-on-one sessions with Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow.',
                   iconKey: 'consult',
                 },
                 {

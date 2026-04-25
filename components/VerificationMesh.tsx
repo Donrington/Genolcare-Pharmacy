@@ -367,7 +367,7 @@ function Card03() {
 
         <div className="flex-1 min-w-0">
           <div className="font-satoshi font-semibold text-gray-800 text-sm leading-tight">
-            Clinical Fellow
+            Eugene Apasi Eromosele
           </div>
           <div className="font-mono text-[8px] tracking-[0.15em] text-genolcare-blue/60 uppercase mt-0.5">
             WAPCP · FPCPharm
@@ -396,7 +396,7 @@ function Card03() {
           Specialist Review
         </h3>
         <p className="font-satoshi text-[13px] text-gray-400 leading-relaxed">
-          A WAPCP-certified Fellow personally audits every flagged prescription. No automation replaces this step.
+          Eugene Apasi Eromosele (FPCPharm, WAPCP Fellow) personally audits every flagged prescription. No automation replaces this step.
         </p>
       </div>
     </div>

@@ -29,7 +29,7 @@ const SERVICES = [
     href: '/services/consultations',
     label: 'Clinical Consulting',
     title: 'Clinical Consulting',
-    subtitle: 'Expert advice from WAPCP Fellows.',
+    subtitle: 'Expert advice from Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow.',
     hero: false,
     image: '/TheEngagement.png',
     colSpan: 'md:col-span-4',

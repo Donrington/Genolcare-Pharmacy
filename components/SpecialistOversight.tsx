@@ -134,7 +134,7 @@ export default function SpecialistOversight() {
                 {/* Corner watermark */}
                 <div className="absolute bottom-6 left-6 right-6">
                   <span className="font-mono text-[8px] tracking-[0.32em] text-white/38 uppercase">
-                    [ FPCPharm ] &nbsp;·&nbsp; CLINICAL FOUNDER
+                    Eugene Apasi Eromosele &nbsp;·&nbsp; FPCPharm
                   </span>
                 </div>
                 {/* Top-right credential badge */}
@@ -231,7 +231,7 @@ export default function SpecialistOversight() {
             className="font-satoshi text-gray-500 text-base sm:text-[17px] leading-relaxed max-w-lg mb-10"
           >
             Every prescription flag, interaction alert, and dosage anomaly is
-            reviewed manually by a WAPCP-certified Fellow — FPCPharm. No algorithm
+            reviewed manually by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow. No algorithm
             issues a final clearance. Human intelligence remains the last and most
             critical gate in our process.
           </motion.p>

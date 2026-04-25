@@ -21,7 +21,7 @@ const SCHEMA = {
       '@id': 'https://genolcare.com/#pharmacy',
       name: 'Genolcare Pharmacy',
       description:
-        'Specialist pharmacy and clinical consulting led by an FPCPharm-certified WAPCP Fellow in Wuse District, Abuja, Nigeria.',
+        'Specialist pharmacy and clinical consulting led by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow — in Wuse District, Abuja, Nigeria.',
       url: 'https://genolcare.com',
       telephone: '+2349123456789',
       priceRange: '₦₦',

@@ -79,7 +79,7 @@ export default function ConsultingHero() {
           className="mb-6 md:mb-10 font-mono text-[10px] md:text-[11px] tracking-[0.4em] text-white/60 uppercase"
           style={{ fontFamily: 'var(--font-geist-mono)' }}
         >
-          [ WAPCP_FELLOWSHIP_OVERSIGHT ]
+          [ EUGENE APASI EROMOSELE // WAPCP_FELLOWSHIP ]
         </motion.div>
 
         {/* The TextMask Headline */}

@@ -221,7 +221,7 @@ const steps = [
   {
     title: "02. ANALYZE",
     subtitle: "Diagnostic Evaluation",
-    desc: "Synthesizing data against WAPCP Fellows&apos; evidence-based guidelines."
+    desc: "Synthesizing data against Eugene Apasi Eromosele\u0026apos;s evidence-based clinical guidelines."
   },
   {
     title: "03. FORMULATE",

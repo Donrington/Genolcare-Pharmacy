@@ -92,7 +92,7 @@ export default function FounderAuthority() {
           >
             <Image
               src="/founder.jpg"
-              alt="Genolcare Founder — FPCPharm"
+              alt="Eugene Apasi Eromosele — FPCPharm, Genolcare Founder"
               fill
               className="object-cover object-top"
               priority
@@ -109,7 +109,7 @@ export default function FounderAuthority() {
               className="font-satoshi text-[10px] tracking-[0.45em] text-white/20 uppercase font-semibold rotate-90 origin-bottom-left translate-y-[-1rem]"
               style={{ writingMode: 'vertical-lr' }}
             >
-              FPCPharm · Clinical Founder · Genolcare
+              Eugene Apasi Eromosele · FPCPharm · Genolcare
             </p>
           </div>
 
@@ -125,7 +125,7 @@ export default function FounderAuthority() {
                 Founder & Chief Pharmacist
               </p>
               <p className="font-satoshi text-2xl font-black text-white tracking-tight leading-none">
-                Genolcare Pharmacy
+                Eugene Apasi Eromosele
               </p>
             </motion.div>
           </div>
