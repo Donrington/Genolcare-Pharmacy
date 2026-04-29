@@ -91,7 +91,7 @@ export default function FounderAuthority() {
             style={{ x: imgX, y: imgY, scale: imgScale }}
           >
             <Image
-              src="/founder.jpg"
+              src="/founder.png"
               alt="Eugene Apasi Eromosele — FPCPharm, Genolcare Founder"
               fill
               className="object-cover object-top"
@@ -102,6 +102,20 @@ export default function FounderAuthority() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
           </motion.div>
+
+          {/* Film grain — static, sits above parallax layer */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none z-[5]"
+            style={{ mixBlendMode: 'overlay', opacity: 0.28 }}
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <filter id="founder-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#founder-grain)" />
+          </svg>
 
           {/* Watermark — fixed, does NOT move with parallax */}
           <div className="absolute inset-0 flex items-end justify-start p-8 pointer-events-none z-10">
