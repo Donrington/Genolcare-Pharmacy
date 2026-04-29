@@ -101,31 +101,22 @@ export default function FounderAuthority() {
             {/* Editorial gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
+            {/* Film grain — inside parallax, applies only to image layer */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{ mixBlendMode: 'overlay', opacity: 0.28 }}
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <filter id="founder-grain">
+                <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
+                <feColorMatrix type="saturate" values="0" />
+              </filter>
+              <rect width="100%" height="100%" filter="url(#founder-grain)" />
+            </svg>
           </motion.div>
 
-          {/* Film grain — static, sits above parallax layer */}
-          <svg
-            className="absolute inset-0 w-full h-full pointer-events-none z-[5]"
-            style={{ mixBlendMode: 'overlay', opacity: 0.28 }}
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <filter id="founder-grain">
-              <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
-              <feColorMatrix type="saturate" values="0" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#founder-grain)" />
-          </svg>
-
-          {/* Watermark — fixed, does NOT move with parallax */}
-          <div className="absolute inset-0 flex items-end justify-start p-8 pointer-events-none z-10">
-            <p
-              className="font-satoshi text-[10px] tracking-[0.45em] text-white/20 uppercase font-semibold rotate-90 origin-bottom-left translate-y-[-1rem]"
-              style={{ writingMode: 'vertical-lr' }}
-            >
-              Eugene Apasi Eromosele · FPCPharm · Genolcare
-            </p>
-          </div>
+ 
 
           {/* Bottom name badge */}
           <div className="absolute bottom-0 left-0 right-0 p-8 z-10">
