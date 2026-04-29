@@ -223,7 +223,7 @@ function MobileOverlay({
         </div>
 
         {/* Nav links */}
-        <nav className="flex-1 flex flex-col justify-center -mt-10">
+        <nav className="flex-1 flex flex-col justify-center">
           <ul className="flex flex-col gap-1">
             {NAV_LINKS.map((l, i) => {
               const isServices = l.label === 'Services';
