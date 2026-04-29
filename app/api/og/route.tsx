@@ -144,7 +144,7 @@ export async function GET() {
               }}
             >
               <span style={{ color: '#6DBE45', fontSize: '12px', fontWeight: '700', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-                Wuse District, Abuja FCT · Nigeria
+                Dakwo, Lokogoma · Abuja FCT · Nigeria
               </span>
             </div>
 

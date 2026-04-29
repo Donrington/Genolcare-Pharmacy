@@ -92,7 +92,7 @@ export default function FounderAuthority() {
           >
             <Image
               src="/founder.png"
-              alt="Eugene Apasi Eromosele — FPCPharm, Genolcare Founder"
+              alt="Eugene Apasi Eromosele — Genolcare Founder"
               fill
               className="object-cover object-top"
               priority

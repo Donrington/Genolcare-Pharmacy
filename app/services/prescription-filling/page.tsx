@@ -9,7 +9,7 @@ import DigitalBridgeCTA from '@/components/DigitalBridgeCTA';
 export const metadata: Metadata = {
   title: 'Precision Prescription Fulfillment',
   description:
-    'Specialist-led prescription filling with multi-tier verification by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow. Cold-chain capable. 15+ years of infectious disease pharmacology expertise.',
+    'Specialist-led prescription filling with multi-tier verification by Eugene Apasi Eromosele. Cold-chain capable. 15+ years of infectious disease pharmacology expertise.',
 };
 
 export default function PrescriptionFillingPage() {

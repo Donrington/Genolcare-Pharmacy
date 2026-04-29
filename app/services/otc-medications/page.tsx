@@ -4,7 +4,7 @@ import HeroOTC from '@/components/HeroOTC';
 export const metadata: Metadata = {
   title: 'OTC Medications',
   description:
-    'Genuine over-the-counter medications sourced and verified by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow. Fast turnaround. NAFDAC-approved. Wuse District, Abuja.',
+    'Genuine over-the-counter medications sourced and verified by Eugene Apasi Eromosele. Fast turnaround. NAFDAC-approved. Dakwo, Lokogoma, Abuja.',
 };
 
 export default function OTCMedicationsPage() {

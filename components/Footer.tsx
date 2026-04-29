@@ -21,13 +21,13 @@ const SCHEMA = {
       '@id': 'https://genolcare.com/#pharmacy',
       name: 'Genolcare Pharmacy',
       description:
-        'Specialist pharmacy and clinical consulting led by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow — in Wuse District, Abuja, Nigeria.',
+        'Specialist pharmacy and clinical consulting led by Eugene Apasi Eromosele in Dakwo, off Sunnyvale Junction, Lokogoma, Abuja, Nigeria.',
       url: 'https://genolcare.com',
       telephone: '+2349123456789',
       priceRange: '₦₦',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Wuse District',
+        streetAddress: 'Dakwo, off Sunnyvale Junction, Lokogoma',
         addressLocality: 'Abuja',
         addressRegion: 'Federal Capital Territory',
         addressCountry: 'NG',
@@ -35,21 +35,15 @@ const SCHEMA = {
       openingHoursSpecification: [
         {
           '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: '08:00',
-          closes: '21:00',
-        },
-        {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: 'Saturday',
-          opens: '09:00',
-          closes: '20:00',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '08:30',
+          closes: '21:30',
         },
         {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: 'Sunday',
-          opens: '12:00',
-          closes: '18:00',
+          opens: '15:00',
+          closes: '20:30',
         },
       ],
       contactPoint: {
@@ -65,9 +59,8 @@ const SCHEMA = {
 
 /* ─── Static data ───────────────────────────────────────────────── */
 const HOURS = [
-  { days: 'Mon — Fri', open: 8 * 60, close: 21 * 60, time: '8:00 AM – 9:00 PM' },
-  { days: 'Saturday', open: 9 * 60, close: 20 * 60, time: '9:00 AM – 8:00 PM' },
-  { days: 'Sunday', open: 12 * 60, close: 18 * 60, time: '12:00 PM – 6:00 PM' },
+  { days: 'Mon — Sat', open: 8 * 60 + 30, close: 21 * 60 + 30, time: '8:30 AM – 9:30 PM' },
+  { days: 'Sunday', open: 15 * 60, close: 20 * 60 + 30, time: '3:00 PM – 8:30 PM' },
 ];
 
 const NAV_LINKS = [
@@ -306,7 +299,7 @@ function MagneticMapCard() {
         >
           <div>
             <p className="font-satoshi text-[9px] tracking-[0.3em] text-white/40 uppercase font-semibold mb-0.5">
-              Wuse District
+              Dakwo, Lokogoma
             </p>
             <p className="font-satoshi text-sm font-semibold text-white leading-none">
               Abuja, Nigeria
@@ -315,10 +308,10 @@ function MagneticMapCard() {
 
           {/* Circular floating CTA */}
           <a
-            href="https://maps.google.com/?q=Wuse+District+Abuja+Nigeria"
+            href="https://maps.google.com/?q=Dakwo+Sunnyvale+Junction+Lokogoma+Abuja+Nigeria"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Get directions to Genolcare Pharmacy in Wuse District, Abuja on Google Maps"
+            aria-label="Get directions to Genolcare Pharmacy in Dakwo, Lokogoma, Abuja on Google Maps"
             className="shrink-0 w-12 h-12 rounded-full
               bg-white/10 backdrop-blur-xl border border-white/20
               flex items-center justify-center
@@ -411,7 +404,7 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              [ Wuse District · FCT · Nigeria ]
+              [ Dakwo, Lokogoma · FCT · Nigeria ]
             </motion.p>
           </div>
         </div>
@@ -469,8 +462,8 @@ export default function Footer() {
                   Genolcare Pharmacy
                 </p>
                 <p className="text-white/45 text-sm leading-relaxed text-center lg:text-left">
-                  Wuse District<br />
-                  Abuja, FCT<br />
+                  Dakwo, off Sunnyvale Junction<br />
+                  Lokogoma, Abuja FCT<br />
                   Nigeria
                 </p>
               </address>

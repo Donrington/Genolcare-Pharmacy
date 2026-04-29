@@ -426,7 +426,7 @@ export default function NotFound() {
             </span>
             <span className="w-px h-3 bg-gray-200" />
             <span className="font-mono text-[9px] tracking-widest text-gray-300 uppercase">
-              Wuse District · Abuja
+              Dakwo, Lokogoma · Abuja
             </span>
             <span className="w-px h-3 bg-gray-200" />
             <motion.span

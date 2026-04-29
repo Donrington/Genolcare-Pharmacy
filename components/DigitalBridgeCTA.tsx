@@ -406,7 +406,7 @@ export default function DigitalBridgeCTA() {
           className="font-mono text-[7px] tracking-[0.22em] uppercase"
           style={{ color: 'rgba(255,255,255,0.10)' }}
         >
-          Genolcare Pharmacy · Wuse District, Abuja FCT
+          Genolcare Pharmacy · Dakwo, Lokogoma, Abuja FCT
         </motion.span>
         <motion.span
           initial={{ opacity: 0 }}

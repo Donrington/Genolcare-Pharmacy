@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Genolcare Pharmacy is Abuja's premier specialist pharmaceutical practice — founded by Eugene Apasi Eromosele, FPCPharm and WAPCP Fellow with 15+ years in infectious disease pharmacology. Genuine medications, expert clinical consultations, cold-chain handling, and precision prescription fulfillment in Wuse District, Abuja FCT.",
+    "Genolcare Pharmacy is Abuja's premier specialist pharmaceutical practice — founded by Eugene Apasi Eromosele with 15+ years in infectious disease pharmacology. Genuine medications, expert clinical consultations, cold-chain handling, and precision prescription fulfillment in Dakwo, Lokogoma, Abuja FCT.",
 
   keywords: [
     'pharmacy Abuja',
@@ -43,7 +43,8 @@ export const metadata: Metadata = {
     'clinical consultation Abuja',
     'specialist pharmacy Nigeria',
     'genuine medications Abuja',
-    'Wuse District pharmacy',
+    'Dakwo pharmacy Abuja',
+    'Lokogoma pharmacy Abuja',
     'infectious disease pharmacology Nigeria',
     'WAPCP Fellow pharmacist',
     'FPCPharm Abuja',
@@ -91,7 +92,7 @@ export const metadata: Metadata = {
     siteName: 'Genolcare Pharmacy',
     title: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
     description:
-      'Abuja\'s premier specialist pharmacy. WAPCP-certified clinical consultations, genuine medications, precision prescription fulfillment, and cold-chain handling — 15+ years of trusted expertise in Wuse District, Abuja FCT.',
+      'Abuja\'s premier specialist pharmacy. WAPCP-certified clinical consultations, genuine medications, precision prescription fulfillment, and cold-chain handling — 15+ years of trusted expertise in Dakwo, Lokogoma, Abuja FCT.',
     images: [
       {
         url: '/api/og',
@@ -109,7 +110,7 @@ export const metadata: Metadata = {
     creator: '@genolcare',
     title: 'Genolcare Pharmacy — Clinical Excellence. Precision Care.',
     description:
-      'Abuja\'s premier specialist pharmacy. 15+ years of expertise, WAPCP-certified consultations, and 100% genuine medications. Wuse District, Abuja FCT.',
+      'Abuja\'s premier specialist pharmacy. 15+ years of expertise, WAPCP-certified consultations, and 100% genuine medications. Dakwo, Lokogoma, Abuja FCT.',
     images: [
       {
         url: '/api/og',
@@ -129,8 +130,8 @@ export const metadata: Metadata = {
   other: {
     'geo.region': 'NG-FC',
     'geo.placename': 'Abuja',
-    'geo.position': '9.0765;7.3986',
-    'ICBM': '9.0765, 7.3986',
+    'geo.position': '9.0028;7.4478',
+    'ICBM': '9.0028, 7.4478',
     'og:locality': 'Abuja',
     'og:region': 'FCT',
     'og:country-name': 'Nigeria',
@@ -172,7 +173,7 @@ export default function RootLayout({
                   name: 'Genolcare Pharmacy',
                   alternateName: 'Genolcare Pharmacy & Clinical Consulting',
                   description:
-                    'Specialist pharmaceutical practice in Wuse District, Abuja FCT, Nigeria. Founded by Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow — with over 15 years of expertise in infectious disease pharmacology.',
+                    'Specialist pharmaceutical practice in Dakwo, off Sunnyvale Junction, Lokogoma, Abuja FCT, Nigeria. Founded by Eugene Apasi Eromosele with over 15 years of expertise in infectious disease pharmacology.',
                   url: BASE_URL,
                   logo: {
                     '@type': 'ImageObject',
@@ -184,40 +185,34 @@ export default function RootLayout({
                   telephone: '+234912345678',
                   address: {
                     '@type': 'PostalAddress',
-                    streetAddress: 'Wuse District',
+                    streetAddress: 'Dakwo, off Sunnyvale Junction, Lokogoma',
                     addressLocality: 'Abuja',
                     addressRegion: 'FCT',
                     addressCountry: 'NG',
                   },
                   geo: {
                     '@type': 'GeoCoordinates',
-                    latitude: 9.0765,
-                    longitude: 7.3986,
+                    latitude: 9.0028,
+                    longitude: 7.4478,
                   },
                   openingHoursSpecification: [
                     {
                       '@type': 'OpeningHoursSpecification',
-                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                      opens: '08:00',
-                      closes: '21:00',
-                    },
-                    {
-                      '@type': 'OpeningHoursSpecification',
-                      dayOfWeek: 'Saturday',
-                      opens: '09:00',
-                      closes: '20:00',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                      opens: '08:30',
+                      closes: '21:30',
                     },
                     {
                       '@type': 'OpeningHoursSpecification',
                       dayOfWeek: 'Sunday',
-                      opens: '12:00',
-                      closes: '18:00',
+                      opens: '15:00',
+                      closes: '20:30',
                     },
                   ],
                   priceRange: 'NGN',
                   currenciesAccepted: 'NGN',
                   paymentAccepted: 'Cash, Bank Transfer',
-                  hasMap: 'https://maps.google.com/?q=Wuse+District+Abuja+Nigeria',
+                  hasMap: 'https://maps.google.com/?q=Dakwo+Sunnyvale+Junction+Lokogoma+Abuja+Nigeria',
                   sameAs: [],
                   aggregateRating: {
                     '@type': 'AggregateRating',

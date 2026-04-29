@@ -13,7 +13,7 @@ const FAQS = [
   {
     id: 'consultation',
     q: 'Can I schedule a private clinical consultation?',
-    a: 'Yes. We offer dedicated consultation blocks with Eugene Apasi Eromosele (FPCPharm, WAPCP Fellow) for comprehensive medication therapy management and chronic disease oversight.',
+    a: 'Yes. We offer dedicated consultation blocks with Eugene Apasi Eromosele for comprehensive medication therapy management and chronic disease oversight.',
   },
   {
     id: 'support',

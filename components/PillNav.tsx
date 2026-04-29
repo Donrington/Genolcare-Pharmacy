@@ -15,7 +15,7 @@ const NAV_LINKS = [
 
 const SERVICES = [
   { label: 'Prescription Filling', desc: 'Specialist-led precision dispensing with multi-tier verification.', href: '/services/prescription-filling' },
-  { label: 'Clinical Consulting', desc: 'One-on-one sessions with Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow.', href: '/services/consultations' },
+  { label: 'Clinical Consulting', desc: 'One-on-one sessions with Eugene Apasi Eromosele.', href: '/services/consultations' },
   { label: 'OTC Medications', desc: 'Genuine over-the-counter medications for everyday care.', href: '/services/otc-medications' },
   { label: 'Wellness Products', desc: 'Curated vitamins and premium wellness essentials.', href: '/services' },
 ];

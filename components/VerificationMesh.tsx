@@ -396,7 +396,7 @@ function Card03() {
           Specialist Review
         </h3>
         <p className="font-satoshi text-[13px] text-gray-400 leading-relaxed">
-          Eugene Apasi Eromosele (FPCPharm, WAPCP Fellow) personally audits every flagged prescription. No automation replaces this step.
+          Eugene Apasi Eromosele personally audits every flagged prescription. No automation replaces this step.
         </p>
       </div>
     </div>
