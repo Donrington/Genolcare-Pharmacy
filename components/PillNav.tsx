@@ -174,27 +174,28 @@ function NavContactModal({ open, onClose }: { open: boolean; onClose: () => void
 
 /* ── Mobile Overlay ───────────────────────────────────────────────── */
 function MobileOverlay({
-  open,
   onClose,
   openContact,
 }: {
-  open: boolean;
   onClose: () => void;
   openContact: () => void;
 }) {
+  const [mounted, setMounted] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
+    // Trigger enter animations on next frame
+    const id = requestAnimationFrame(() => setMounted(true));
+    document.body.style.overflow = 'hidden';
+    return () => {
+      cancelAnimationFrame(id);
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   return (
     <div
-      className={[
-        'fixed inset-0 z-[90] transition-opacity duration-300',
-        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
-      ].join(' ')}
+      className="fixed inset-0 z-[90] animate-[fadeIn_0.25s_ease]"
       style={{ background: 'linear-gradient(180deg, #0a1838 0%, #050e26 100%)' }}
     >
       {/* Radial glow */}
@@ -231,9 +232,9 @@ function MobileOverlay({
                   key={l.label}
                   className={[
                     'border-b border-white/[0.08] transition-all',
-                    open ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
+                    mounted ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
                   ].join(' ')}
-                  style={{ transitionDelay: open ? `${100 + i * 60}ms` : '0ms', transitionDuration: '400ms' }}
+                  style={{ transitionDelay: mounted ? `${100 + i * 60}ms` : '0ms', transitionDuration: '400ms' }}
                 >
                   {isServices ? (
                     <>
@@ -321,13 +322,13 @@ function MobileOverlay({
             onClick={() => { onClose(); setTimeout(openContact, 200); }}
             className={[
               'mt-7 w-full inline-flex items-center justify-center gap-2 h-14 rounded-full font-bold text-base border transition',
-              open ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
+              mounted ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
             ].join(' ')}
             style={{
               background: '#6DBE45',
               color: '#0a1632',
               borderColor: '#6DBE45',
-              transitionDelay: open ? `${100 + NAV_LINKS.length * 60}ms` : '0ms',
+              transitionDelay: mounted ? `${100 + NAV_LINKS.length * 60}ms` : '0ms',
               transitionDuration: '400ms',
             }}
           >
@@ -459,11 +460,12 @@ export default function PillNav() {
         </div>
       </header>
 
-      <MobileOverlay
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        openContact={() => setContactOpen(true)}
-      />
+      {mobileOpen && (
+        <MobileOverlay
+          onClose={() => setMobileOpen(false)}
+          openContact={() => setContactOpen(true)}
+        />
+      )}
       <NavContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
