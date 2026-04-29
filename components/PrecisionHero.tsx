@@ -230,7 +230,7 @@ function PrecisionWords({ isRevealed, fillOpacity, outlineOpacity }: PrecisionWo
           ref={word0Ref}
           className="inline-block font-satoshi font-black text-gray-900 leading-none select-none"
           style={{
-            fontSize: 'clamp(2.2rem, 9vw, 8rem)',
+            fontSize: 'clamp(1.8rem, 6vw, 6rem)',
             filter: activeIndex === 0 ? 'blur(0px)' : `blur(${BLUR}px)`,
             transition: 'filter 0.5s ease',
             willChange: 'filter',
@@ -250,7 +250,7 @@ function PrecisionWords({ isRevealed, fillOpacity, outlineOpacity }: PrecisionWo
           ref={word1Ref}
           className="inline-block font-satoshi font-black"
           style={{
-            fontSize: 'clamp(2.2rem, 9vw, 8rem)', 
+            fontSize: 'clamp(1.8rem, 6vw, 6rem)', 
             WebkitTextStroke: '2px #374151',
             color: 'transparent',
             filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
@@ -265,7 +265,7 @@ function PrecisionWords({ isRevealed, fillOpacity, outlineOpacity }: PrecisionWo
         <motion.span
           className="absolute top-0 left-0 inline-block font-satoshi font-black pointer-events-none"
           style={{
-            fontSize: 'clamp(2.2rem, 9vw, 8rem)',
+            fontSize: 'clamp(1.8rem, 6vw, 6rem)',
             WebkitTextStroke: '2px #374151',
             color: '#1A3B8B',
             filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
@@ -280,7 +280,7 @@ function PrecisionWords({ isRevealed, fillOpacity, outlineOpacity }: PrecisionWo
         <motion.span
           className="absolute top-0 left-0 inline-block font-satoshi font-black pointer-events-none"
           style={{
-            fontSize: 'clamp(2.2rem, 9vw, 8rem)', 
+            fontSize: 'clamp(1.8rem, 6vw, 6rem)', 
             WebkitTextStroke: '2px #374151',
             color: 'transparent',
             filter: activeIndex === 1 ? 'blur(0px)' : `blur(${BLUR}px)`,
