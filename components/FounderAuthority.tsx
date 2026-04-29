@@ -132,6 +132,9 @@ export default function FounderAuthority() {
               <p className="font-satoshi text-2xl font-black text-white tracking-tight leading-none">
                 Eugene Apasi Eromosele
               </p>
+              <p className="font-satoshi text-[10px] tracking-[0.25em] text-white/40 uppercase mt-1.5">
+                FPCPharm &nbsp;·&nbsp; WAPCP Fellow
+              </p>
             </motion.div>
           </div>
         </div>
