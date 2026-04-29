@@ -1,409 +1,470 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import Image from 'next/image';
-import ContactModal from './ContactModal';
 
-/* ─── Types ─────────────────────────────────────────────────────── */
-interface SubItem {
-  label: string;
-  href: string;
-  description: string;
-  iconKey: 'rx' | 'consult' | 'otc' | 'wellness';
-}
+const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Our Process', href: '/#process' },
+  { label: 'About', href: '/#about' },
+  { label: 'FAQ', href: '/#faq' },
+];
 
-interface NavItem {
-  label: string;
-  href: string;
-  subItems?: SubItem[];
-}
+const SERVICES = [
+  { label: 'Prescription Filling', desc: 'Specialist-led precision dispensing with multi-tier verification.', href: '/services/prescription-filling' },
+  { label: 'Clinical Consulting', desc: 'One-on-one sessions with Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow.', href: '/services/consultations' },
+  { label: 'OTC Medications', desc: 'Genuine over-the-counter medications for everyday care.', href: '/services/otc-medications' },
+  { label: 'Wellness Products', desc: 'Curated vitamins and premium wellness essentials.', href: '/services' },
+];
 
-interface PillNavProps {
-  logo?: string;
-  logoAlt?: string;
-  items: NavItem[];
-}
-
-/* ─── Service Icons ─────────────────────────────────────────────── */
-const SERVICE_ICONS: Record<string, React.ReactNode> = {
-  rx: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-  ),
-  consult: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
-    </svg>
-  ),
-  otc: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-    </svg>
-  ),
-  wellness: (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-    </svg>
-  ),
-};
-
-/* ─── Desktop Dropdown ──────────────────────────────────────────── */
-function ServicesDropdown({ subItems }: { subItems: SubItem[] }) {
+/* ── Logo ─────────────────────────────────────────────────────────── */
+function Logo() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 6, scale: 0.97 }}
-      transition={{ type: 'spring', stiffness: 340, damping: 28 }}
-      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[480px] z-50"
-    >
-      {/* Stem */}
-      <div className="flex justify-center mb-1">
-        <div className="w-px h-3 bg-white/40" />
-      </div>
-
-      <div className="rounded-2xl overflow-hidden
-        bg-white/80 backdrop-blur-2xl border border-white/60
-        shadow-[0_16px_48px_-8px_rgba(0,0,0,0.12),inset_0_0_0_1px_rgba(255,255,255,0.7)]
-        p-2"
-      >
-        {/* Header */}
-        <div className="px-3 py-2 mb-1">
-          <p className="font-satoshi text-[9px] tracking-[0.35em] text-gray-400 uppercase font-semibold">
-            [ Our Services ]
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-1">
-          {subItems.map((sub, i) => (
-            <motion.div
-              key={sub.href}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link
-                href={sub.href}
-                className="group flex items-start gap-3 p-3 rounded-xl
-                  hover:bg-genolcare-blue/5 transition-all duration-200"
-              >
-                <span className="mt-0.5 w-8 h-8 rounded-lg bg-genolcare-blue/8 flex items-center justify-center
-                  text-genolcare-blue group-hover:bg-genolcare-blue group-hover:text-white
-                  transition-all duration-200 flex-shrink-0">
-                  {SERVICE_ICONS[sub.iconKey]}
-                </span>
-                <div>
-                  <p className="font-satoshi text-sm font-semibold text-gray-900 leading-tight mb-0.5 group-hover:text-genolcare-blue transition-colors duration-200">
-                    {sub.label}
-                  </p>
-                  <p className="font-satoshi text-[11px] text-gray-400 leading-snug">
-                    {sub.description}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Footer CTA */}
-        <div className="mt-1 pt-2 border-t border-gray-100/80 px-3 pb-1">
-          <Link
-            href="/services"
-            className="flex items-center justify-between w-full py-2 group"
-          >
-            <span className="font-satoshi text-[11px] text-gray-400 tracking-wide">
-              View all services
-            </span>
-            <svg
-              className="w-3.5 h-3.5 text-gray-400 group-hover:text-genolcare-blue group-hover:translate-x-0.5 transition-all duration-200"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </Link>
-        </div>
-      </div>
-    </motion.div>
+    <Link href="/" className="flex items-center">
+      <Image
+        src="/genolcare_logo_white.png"
+        alt="Genolcare"
+        width={120}
+        height={40}
+        className="h-8 w-auto"
+        priority
+      />
+    </Link>
   );
 }
 
-/* ─── Desktop Nav Item ──────────────────────────────────────────── */
-function DesktopNavItem({ item, isActive }: { item: NavItem; isActive: boolean }) {
-  const [open, setOpen] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setOpen(false), 120);
-  };
-
-  if (!item.subItems) {
-    return (
-      <Link href={item.href}>
-        <motion.button className="relative px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition-colors duration-300 hover:text-slate-900">
-          {isActive && (
-            <motion.div
-              layoutId="active-bg"
-              className="absolute inset-0 bg-white rounded-full shadow-sm -z-10"
-              transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-            />
-          )}
-          <span className={`font-satoshi ${isActive ? 'text-slate-900 font-semibold' : ''}`}>
-            {item.label}
-          </span>
-        </motion.button>
-      </Link>
-    );
-  }
-
+/* ── Desktop Services Dropdown ───────────────────────────────────── */
+function ServicesDropdown({ open }: { open: boolean }) {
   return (
     <div
-      className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className={[
+        'absolute left-1/2 -translate-x-1/2 top-[calc(100%+10px)] w-[520px] origin-top',
+        'transition-all duration-200 ease-out',
+        open ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none',
+      ].join(' ')}
     >
-      <motion.button
-        className="relative flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition-colors duration-300 hover:text-slate-900"
+      <div
+        className="rounded-3xl p-2.5 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
+        style={{ background: 'rgba(8,16,38,0.95)', backdropFilter: 'blur(20px)' }}
       >
-        {isActive && (
-          <motion.div
-            layoutId="active-bg"
-            className="absolute inset-0 bg-white rounded-full shadow-sm -z-10"
-            transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-          />
-        )}
-        <span className={`font-satoshi ${isActive ? 'text-slate-900 font-semibold' : ''}`}>
-          {item.label}
-        </span>
-        <motion.svg
-          className="w-3 h-3 text-gray-400"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+        <div className="grid grid-cols-2 gap-1.5">
+          {SERVICES.map((s) => (
+            <Link
+              key={s.label}
+              href={s.href}
+              className="group block rounded-2xl p-3.5 hover:bg-white/[0.05] transition"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[14px] font-bold text-white">{s.label}</span>
+                <span
+                  className="opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition"
+                  style={{ color: '#6DBE45' }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </div>
+              <p className="m-0 text-[12px] leading-snug text-white/55">{s.desc}</p>
+            </Link>
+          ))}
+        </div>
+        <Link
+          href="/services"
+          className="mt-2 flex items-center justify-between rounded-2xl px-4 py-3 text-[13px] font-semibold text-white hover:bg-white/[0.04] transition"
+          style={{ background: 'rgba(109,190,69,0.08)', border: '1px solid rgba(109,190,69,0.2)' }}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </motion.svg>
-      </motion.button>
-
-      <AnimatePresence>
-        {open && <ServicesDropdown subItems={item.subItems} />}
-      </AnimatePresence>
+          <span>
+            View all services <span className="text-white/50 font-normal">— including private consults</span>
+          </span>
+          <span style={{ color: '#6DBE45' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </Link>
+      </div>
     </div>
   );
 }
 
-/* ─── Mobile Sub-menu ────────────────────────────────────────────── */
-function MobileSubMenu({ subItems }: { subItems: SubItem[] }) {
+/* ── Contact Modal ────────────────────────────────────────────────── */
+function NavContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    if (open) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: 'auto', opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      style={{ overflow: 'hidden' }}
-    >
-      <div className="flex flex-col gap-2 pt-3 pb-1 pl-4">
-        {subItems.map((sub, i) => (
-          <motion.div
-            key={sub.href}
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.06, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+    <div className="fixed inset-0 z-[100] grid place-items-center px-5" role="dialog" aria-modal="true">
+      <div
+        className="absolute inset-0 backdrop-blur-md"
+        style={{ background: 'rgba(5,14,38,0.7)' }}
+        onClick={onClose}
+      />
+      <div
+        className="relative w-full max-w-[480px] rounded-3xl p-7 border border-white/10"
+        style={{
+          background: 'linear-gradient(180deg, #0e1f48 0%, #081434 100%)',
+          boxShadow: '0 40px 100px rgba(0,0,0,0.6)',
+          animation: 'fadeIn 0.3s ease',
+        }}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full grid place-items-center text-white/60 hover:text-white hover:bg-white/10 transition"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div className="text-[11px] uppercase tracking-[0.16em] font-bold mb-2" style={{ color: '#6DBE45' }}>
+          Get in touch
+        </div>
+        <h3 className="m-0 text-[28px] font-black leading-tight text-white">Speak to a specialist</h3>
+        <p className="mt-2 mb-5 text-[14px] text-white/60 leading-relaxed">
+          Drop your details and our team in Abuja will respond within 2 hours. Or call us directly.
+        </p>
+
+        <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+          <input
+            type="text"
+            placeholder="Full name"
+            className="w-full bg-white/[0.04] border border-white/10 text-white px-4 py-3 rounded-xl text-[14px] focus:outline-none transition"
+            style={{ '--tw-ring-color': '#6DBE45' } as React.CSSProperties}
+          />
+          <input
+            type="email"
+            placeholder="Email address"
+            className="w-full bg-white/[0.04] border border-white/10 text-white px-4 py-3 rounded-xl text-[14px] focus:outline-none transition"
+          />
+          <textarea
+            rows={3}
+            placeholder="How can we help?"
+            className="w-full bg-white/[0.04] border border-white/10 text-white px-4 py-3 rounded-xl text-[14px] focus:outline-none transition resize-none"
+          />
+          <button
+            type="submit"
+            className="mt-1 inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full font-bold text-sm border transition hover:-translate-y-px"
+            style={{ background: '#6DBE45', color: '#0a1632', borderColor: '#6DBE45' }}
           >
-            <Link
-              href={sub.href}
-              className="flex items-center gap-3 py-2 group"
-            >
-              <span className="w-7 h-7 rounded-lg bg-genolcare-blue/10 flex items-center justify-center text-genolcare-blue flex-shrink-0">
-                {SERVICE_ICONS[sub.iconKey]}
-              </span>
-              <span className="font-satoshi text-xl font-semibold text-slate-500 group-hover:text-genolcare-blue transition-colors duration-200">
-                {sub.label}
-              </span>
-            </Link>
-          </motion.div>
-        ))}
+            Send message
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </form>
+
+        <div className="mt-5 pt-4 border-t border-white/10 flex justify-between text-[12px] text-white/55">
+          <span>📞 +234 800 GENOL</span>
+          <span>✉ care@genolcare.ng</span>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-/* ─── PillNav ────────────────────────────────────────────────────── */
-export default function PillNav({ logo, logoAlt = 'Logo', items }: PillNavProps) {
+/* ── Mobile Overlay ───────────────────────────────────────────────── */
+function MobileOverlay({
+  open,
+  onClose,
+  openContact,
+}: {
+  open: boolean;
+  onClose: () => void;
+  openContact: () => void;
+}) {
+  const [servicesOpen, setServicesOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  return (
+    <div
+      className={[
+        'fixed inset-0 z-[90] transition-opacity duration-300',
+        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
+      ].join(' ')}
+      style={{ background: 'linear-gradient(180deg, #0a1838 0%, #050e26 100%)' }}
+    >
+      {/* Radial glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(700px 500px at 80% 0%, rgba(109,190,69,0.18), transparent 60%), radial-gradient(700px 500px at 20% 100%, rgba(26,59,139,0.4), transparent 60%)',
+        }}
+      />
+
+      <div className="relative h-full flex flex-col px-7 pt-7 pb-10">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <Logo />
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            className="w-11 h-11 rounded-full grid place-items-center text-white border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] transition"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav className="flex-1 flex flex-col justify-center -mt-10">
+          <ul className="flex flex-col gap-1">
+            {NAV_LINKS.map((l, i) => {
+              const isServices = l.label === 'Services';
+              return (
+                <li
+                  key={l.label}
+                  className={[
+                    'border-b border-white/[0.08] transition-all',
+                    open ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
+                  ].join(' ')}
+                  style={{ transitionDelay: open ? `${100 + i * 60}ms` : '0ms', transitionDuration: '400ms' }}
+                >
+                  {isServices ? (
+                    <>
+                      <button
+                        onClick={() => setServicesOpen((v) => !v)}
+                        className="w-full flex items-center justify-between py-4 text-left text-white"
+                      >
+                        <span
+                          className="font-black tracking-tight"
+                          style={{ fontSize: 'clamp(34px, 9vw, 52px)', lineHeight: 1 }}
+                        >
+                          {l.label}
+                        </span>
+                        <span
+                          className="w-9 h-9 rounded-full grid place-items-center transition-transform"
+                          style={{
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            transform: servicesOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                            color: servicesOpen ? '#6DBE45' : 'white',
+                          }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+                            <path d="M12 5v14M5 12h14" />
+                          </svg>
+                        </span>
+                      </button>
+                      <div
+                        className="grid transition-all duration-300 ease-out overflow-hidden"
+                        style={{ gridTemplateRows: servicesOpen ? '1fr' : '0fr', opacity: servicesOpen ? 1 : 0 }}
+                      >
+                        <div className="min-h-0 overflow-hidden">
+                          <div className="pb-4 flex flex-col gap-2">
+                            {SERVICES.map((s) => (
+                              <Link
+                                key={s.label}
+                                href={s.href}
+                                onClick={onClose}
+                                className="rounded-2xl p-3.5 bg-white/[0.04] border border-white/[0.06] block"
+                              >
+                                <div className="text-[15px] font-bold text-white mb-0.5">{s.label}</div>
+                                <div className="text-[12px] leading-snug text-white/55">{s.desc}</div>
+                              </Link>
+                            ))}
+                            <Link
+                              href="/services"
+                              onClick={onClose}
+                              className="px-3.5 py-2 text-[13px] font-semibold"
+                              style={{ color: '#6DBE45' }}
+                            >
+                              View all services →
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={l.href}
+                      onClick={onClose}
+                      className="flex items-center justify-between py-4 text-white group"
+                    >
+                      <span
+                        className="font-black tracking-tight transition-transform group-hover:translate-x-1"
+                        style={{ fontSize: 'clamp(34px, 9vw, 52px)', lineHeight: 1 }}
+                      >
+                        {l.label}
+                      </span>
+                      <span
+                        className="w-9 h-9 rounded-full grid place-items-center text-white/40 group-hover:text-[#6DBE45] transition"
+                        style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+                          <path d="M7 17L17 7M9 7h8v8" />
+                        </svg>
+                      </span>
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Contact CTA */}
+          <button
+            onClick={() => { onClose(); setTimeout(openContact, 200); }}
+            className={[
+              'mt-7 w-full inline-flex items-center justify-center gap-2 h-14 rounded-full font-bold text-base border transition',
+              open ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
+            ].join(' ')}
+            style={{
+              background: '#6DBE45',
+              color: '#0a1632',
+              borderColor: '#6DBE45',
+              transitionDelay: open ? `${100 + NAV_LINKS.length * 60}ms` : '0ms',
+              transitionDuration: '400ms',
+            }}
+          >
+            Contact us
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </nav>
+
+        {/* Footer */}
+        <div className="flex justify-between text-[11px] uppercase tracking-[0.16em] text-white/40 font-semibold">
+          <span>Abuja, NG</span>
+          <span>Open 24/7</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── PillNav ──────────────────────────────────────────────────────── */
+export default function PillNav() {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [servicesHover, setServicesHover] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showServices = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    setServicesHover(true);
+  };
+  const hideServices = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setServicesHover(false), 160);
+  };
 
-  const navItems = items.slice(0, -1);
-  const ctaItem = items[items.length - 1];
+  const isActive = (href: string) => pathname === href || (href === '/' && pathname === '/');
 
   return (
     <>
-      {/* ── Desktop Nav ─────────────────────────────────────── */}
-      <LayoutGroup>
-        <nav className="hidden md:fixed md:top-8 md:left-1/2 md:transform md:-translate-x-1/2 md:z-50 md:flex md:items-center md:gap-2 md:p-2 md:px-4 md:rounded-full md:backdrop-blur-2xl md:bg-white/40 md:border md:border-white/60 md:shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
-          {logo && (
-            <Link href="/" className="flex items-center justify-center flex-shrink-0">
-              <Image src={logo} alt={logoAlt} width={56} height={56} className="w-11 h-11 object-contain" />
-            </Link>
-          )}
+      <header className="fixed top-4 left-0 right-0 z-[60] flex justify-center px-4 pointer-events-none">
+        <div className="pointer-events-auto flex items-center gap-2.5 max-w-full">
 
-          <div className="flex items-center gap-0.5">
-            {navItems.map((item) => (
-              <DesktopNavItem
-                key={item.href}
-                item={item}
-                isActive={pathname === item.href}
-              />
-            ))}
+          {/* Logo pill — desktop only */}
+          <div
+            className="hidden md:flex items-center h-12 px-4 rounded-full border border-white/10"
+            style={{ background: 'rgba(8,16,38,0.85)', backdropFilter: 'blur(14px)' }}
+          >
+            <Logo />
           </div>
 
-          {ctaItem && (
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="ml-3 px-5 py-2 rounded-full bg-genolcare-blue text-white text-sm font-medium font-satoshi shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
-            >
-              {ctaItem.label}
-            </button>
-          )}
-        </nav>
-      </LayoutGroup>
-
-      {/* ── Mobile Nav Bar ──────────────────────────────────── */}
-      <nav className="md:hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex items-center justify-between w-11/12 max-w-xs p-2 px-3 rounded-full backdrop-blur-2xl bg-white/40 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
-        {logo && (
-          <Link href="/" className="flex items-center justify-center flex-shrink-0">
-            <Image src={logo} alt={logoAlt} width={56} height={56} className="w-10 h-10 object-contain" />
-          </Link>
-        )}
-
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex flex-col justify-center items-center gap-1.5 w-9 h-9"
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-        >
-          <motion.span
-            animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-            className="w-4 h-0.5 bg-slate-600 rounded"
-            transition={{ duration: 0.3 }}
-          />
-          <motion.span
-            animate={isMenuOpen ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }}
-            className="w-4 h-0.5 bg-slate-600 rounded"
-            transition={{ duration: 0.3 }}
-          />
-          <motion.span
-            animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-            className="w-4 h-0.5 bg-slate-600 rounded"
-            transition={{ duration: 0.3 }}
-          />
-        </button>
-      </nav>
-
-      {/* ── Mobile Full-Screen Overlay ───────────────────────── */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden fixed inset-0 bg-white/92 backdrop-blur-3xl z-40 overflow-y-auto"
+          {/* Main nav pill — desktop only */}
+          <nav
+            className="hidden md:flex items-center h-12 px-1.5 rounded-full border border-white/10 relative"
+            style={{ background: 'rgba(8,16,38,0.85)', backdropFilter: 'blur(14px)' }}
+            aria-label="Primary navigation"
           >
-            <div className="w-full min-h-full flex flex-col items-center justify-center gap-2 px-8 py-24">
-              {items.map((item, index) => {
-                const isActive = pathname === item.href;
-                const hasSubItems = !!item.subItems;
-
-                return (
-                  <motion.div
-                    key={item.href}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 40, opacity: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                    className="w-full max-w-xs"
+            {NAV_LINKS.map((l, i) => {
+              const isServices = l.label === 'Services';
+              const active = isActive(l.href);
+              return (
+                <div key={l.label} className="flex items-center">
+                  {i > 0 && <span className="w-px h-4 bg-white/10" aria-hidden="true" />}
+                  <div
+                    className="relative"
+                    onMouseEnter={isServices ? showServices : undefined}
+                    onMouseLeave={isServices ? hideServices : undefined}
                   >
-                    {hasSubItems ? (
-                      <div>
-                        <button
-                          onClick={() => setMobileServicesOpen((p) => !p)}
-                          className="w-full flex items-center justify-between py-1"
+                    <Link
+                      href={l.href}
+                      className={[
+                        'inline-flex items-center gap-1.5 px-4 h-9 rounded-full text-[13px] font-medium transition',
+                        active ? 'text-[#0a1632]' : 'text-white/75 hover:text-white',
+                      ].join(' ')}
+                      style={active ? { background: '#6DBE45' } : undefined}
+                    >
+                      {l.label}
+                      {isServices && (
+                        <svg
+                          width="10" height="10" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" strokeWidth={2.6} strokeLinecap="round"
+                          className="transition-transform"
+                          style={{ transform: servicesHover ? 'rotate(180deg)' : 'rotate(0)' }}
                         >
-                          <span className={`font-satoshi text-4xl font-bold transition-colors duration-300 ${
-                            isActive
-                              ? 'bg-gradient-to-r from-genolcare-blue to-genolcare-green bg-clip-text text-transparent'
-                              : 'text-slate-600'
-                          }`}>
-                            {item.label}
-                          </span>
-                          <motion.svg
-                            className="w-5 h-5 text-gray-400 flex-shrink-0"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                            animate={{ rotate: mobileServicesOpen ? 180 : 0 }}
-                            transition={{ duration: 0.25 }}
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                          </motion.svg>
-                        </button>
+                          <path d="M6 9l6 6 6-6" />
+                        </svg>
+                      )}
+                    </Link>
+                    {isServices && <ServicesDropdown open={servicesHover} />}
+                  </div>
+                </div>
+              );
+            })}
+          </nav>
 
-                        <AnimatePresence>
-                          {mobileServicesOpen && (
-                            <MobileSubMenu
-                              subItems={item.subItems!}
-                            />
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : item === ctaItem ? (
-                      <button
-                        onClick={() => { setIsMenuOpen(false); setIsModalOpen(true); }}
-                        className="block w-full text-left font-satoshi text-4xl font-bold py-1 text-genolcare-blue hover:text-genolcare-blue/80 transition-colors duration-300"
-                      >
-                        {item.label}
-                      </button>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        onClick={() => setIsMenuOpen(false)}
-                        className={`block font-satoshi text-4xl font-bold transition-colors duration-300 py-1 ${
-                          isActive
-                            ? 'bg-gradient-to-r from-genolcare-blue to-genolcare-green bg-clip-text text-transparent'
-                            : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
-                  </motion.div>
-                );
-              })}
+          {/* CTA pill — desktop only */}
+          <div className="hidden md:block">
+            <button
+              onClick={() => setContactOpen(true)}
+              className="inline-flex items-center gap-2 h-12 px-5 rounded-full text-[13px] font-bold border transition hover:-translate-y-px relative overflow-hidden"
+              style={{ background: '#6DBE45', color: '#0a1632', borderColor: '#6DBE45' }}
+            >
+              <span className="relative">Contact</span>
+              <svg className="relative" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </div>
 
-              {/* Bottom tagline */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.45, duration: 0.5 }}
-                className="font-satoshi text-[10px] tracking-[0.4em] text-gray-300 uppercase mt-8"
-              >
-                Clinical Excellence · Precision Care
-              </motion.p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Mobile pill bar */}
+          <div
+            className="md:hidden flex items-center justify-between gap-3 h-12 pl-4 pr-1.5 rounded-full border border-white/10 w-[calc(100vw-2rem)] max-w-sm"
+            style={{ background: 'rgba(8,16,38,0.85)', backdropFilter: 'blur(14px)' }}
+          >
+            <Logo />
+            <button
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+              className="w-9 h-9 rounded-full grid place-items-center shrink-0"
+              style={{ background: '#6DBE45', color: '#0a1632' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+                <path d="M4 7h16M4 12h16M4 17h10" />
+              </svg>
+            </button>
+          </div>
 
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        </div>
+      </header>
+
+      <MobileOverlay
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        openContact={() => setContactOpen(true)}
+      />
+      <NavContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
 }

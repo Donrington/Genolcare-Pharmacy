@@ -249,7 +249,7 @@ export default function ProcessTimeline() {
   }, []);
 
   return (
-    <section className="relative w-full bg-white py-20 md:py-32 lg:py-40 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden">
+    <section id="process" className="relative w-full bg-white py-20 md:py-32 lg:py-40 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden">
       {/* Subtle background depth */}
       <div
         className="absolute inset-0 pointer-events-none"

@@ -75,7 +75,7 @@ export default function FounderAuthority() {
   };
 
   return (
-    <section className="relative w-full bg-white">
+    <section id="about" className="relative w-full bg-white">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
 
         {/* ── LEFT: Sticky Editorial Portrait ─────────────────── */}

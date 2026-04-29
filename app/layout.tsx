@@ -276,47 +276,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <PillNav
-          logo="/genolcare_logo.png"
-          logoAlt="Genolcare Pharmacy Logo"
-          items={[
-            { label: 'Home', href: '/' },
-            {
-              label: 'Services',
-              href: '/services',
-              subItems: [
-                {
-                  label: 'Prescription Filling',
-                  href: '/services/prescription-filling',
-                  description: 'Specialist-led precision dispensing with multi-tier verification.',
-                  iconKey: 'rx',
-                },
-                {
-                  label: 'Clinical Consulting',
-                  href: '/services/consultations',
-                  description: 'One-on-one sessions with Eugene Apasi Eromosele — FPCPharm, WAPCP Fellow.',
-                  iconKey: 'consult',
-                },
-                {
-                  label: 'OTC Medications',
-                  href: '/services/otc-medications',
-                  description: 'Genuine over-the-counter medications for everyday care.',
-                  iconKey: 'otc',
-                },
-                {
-                  label: 'Wellness Products',
-                  href: '/services/wellness',
-                  description: 'Curated vitamins and premium wellness essentials.',
-                  iconKey: 'wellness',
-                },
-              ],
-            },
-            { label: 'Our Process', href: '/#process' },
-            { label: 'About', href: '/#about' },
-            { label: 'FAQ', href: '/#faq' },
-            { label: 'Contact', href: '/contact' },
-          ]}
-        />
+        <PillNav />
         {children}
         <Footer />
         <BackToTop />

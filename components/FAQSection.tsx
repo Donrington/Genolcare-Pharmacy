@@ -115,7 +115,7 @@ export default function FAQSection() {
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <section className="relative w-full bg-[#FAFAFA] py-20 md:py-32 lg:py-40 px-4 sm:px-6 md:px-8 lg:px-12">
+    <section id="faq" className="relative w-full bg-[#FAFAFA] py-20 md:py-32 lg:py-40 px-4 sm:px-6 md:px-8 lg:px-12">
       <div className="w-full max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
 
