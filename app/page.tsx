@@ -1,4 +1,4 @@
-import HeroSection from '@/components/HeroSection';
+import Hero from '@/components/Hero';
 import EthosSection from '@/components/EthosSection';
 import ServicesShowcase from '@/components/ServicesShowcase';
 import ProcessTimeline from '@/components/ProcessTimeline';
@@ -8,7 +8,7 @@ import FAQSection from '@/components/FAQSection';
 export default function Home() {
   return (
     <div className="relative z-10">
-      <HeroSection />
+      <Hero />
       <EthosSection />
       <ServicesShowcase />
       <ProcessTimeline />

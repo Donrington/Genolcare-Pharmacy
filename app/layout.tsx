@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Dancing_Script } from 'next/font/google';
+import { Caveat } from 'next/font/google';
 import PillNav from '@/components/PillNav';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
 });
 
-const dancingScript = Dancing_Script({
+const caveat = Caveat({
   subsets: ['latin'],
   variable: '--font-dancing-script',
   weight: ['400', '600', '700'],
@@ -147,7 +147,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${dancingScript.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${caveat.variable}`}>
       <head>
         <link rel="stylesheet" href="/lineicons/lineicons-free.css" />
         <link rel="canonical" href={BASE_URL} />
