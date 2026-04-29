@@ -439,9 +439,9 @@ export default function PillNav() {
             </button>
           </div>
 
-          {/* Mobile pill bar */}
+          {/* Mobile pill bar — hidden while overlay is open */}
           <div
-            className="md:hidden flex items-center justify-between gap-3 h-12 pl-4 pr-1.5 rounded-full border border-white/10 w-[calc(100vw-2rem)] max-w-sm"
+            className={`md:hidden flex items-center justify-between gap-3 h-12 pl-4 pr-1.5 rounded-full border border-white/10 w-[calc(100vw-2rem)] max-w-sm ${mobileOpen ? 'hidden' : ''}`}
             style={{ background: 'rgba(8,16,38,0.85)', backdropFilter: 'blur(14px)' }}
           >
             <Logo />
