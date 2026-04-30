@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import HeroOTC from '@/components/HeroOTC';
+import OTCShelfProvenance from '@/components/OTCShelfProvenance';
+import AuthenticityMesh from '@/components/AuthenticityMesh';
+import VelocityLogistics from '@/components/VelocityLogistics';
 
 export const metadata: Metadata = {
   title: 'OTC Medications',
@@ -11,6 +14,9 @@ export default function OTCMedicationsPage() {
   return (
     <main className="min-h-screen bg-white flex flex-col">
       <HeroOTC />
+      <OTCShelfProvenance />
+      <AuthenticityMesh />
+      <VelocityLogistics />
     </main>
   );
 }

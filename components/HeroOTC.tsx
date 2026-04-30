@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import TrueFocus from './TrueFocus';
+import ContactModal from './ContactModal';
 import {
   motion,
   useScroll,
@@ -154,6 +155,7 @@ function StatusBadge() {
 /* ─── Main Component ──────────────────────────────────────────────── */
 
 export default function HeroOTC() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const bgRef    = useRef<HTMLDivElement>(null);
   const headRef  = useRef<HTMLDivElement>(null);
   const subRef   = useRef<HTMLParagraphElement>(null);
@@ -300,34 +302,25 @@ export default function HeroOTC() {
           transition={{ duration: 0.85, delay: 1.85, ease: [0.22, 1, 0.36, 1] }}
           className="mt-12 flex items-center gap-6 flex-wrap justify-center"
         >
-          <motion.a
-            href="/services/otc-medications#browse"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-3 bg-[#0F1830] text-white
-              font-satoshi font-semibold text-sm px-7 py-4 rounded-2xl
-              shadow-[0_8px_28px_rgba(15,24,48,0.22)]
-              hover:shadow-[0_14px_36px_rgba(15,24,48,0.32)]
-              transition-shadow duration-300"
+          <motion.button
+            onClick={() => setIsContactOpen(true)}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full
+              font-satoshi font-semibold text-sm text-white
+              bg-gradient-to-br from-[#6DBE45] via-[#5BA838] to-[#4A9430]
+              border border-white/20 backdrop-blur-xl
+              shadow-[0_20px_50px_rgba(109,190,69,0.25),inset_0_1px_0_rgba(255,255,255,0.3)]
+              hover:shadow-[0_28px_64px_rgba(109,190,69,0.35),inset_0_1px_0_rgba(255,255,255,0.4)]
+              transition-all duration-300 overflow-hidden group"
           >
-            Browse Medications
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </motion.a>
-
-          <motion.a
-            href="/services/consultations"
-            whileHover={{ x: 4 }}
-            className="inline-flex items-center gap-2 font-satoshi text-sm
-              font-semibold text-[#0F1830]/45 hover:text-[#0F1830]
-              transition-colors duration-200"
-          >
-            Need a consultation?
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+              translate-x-full group-hover:translate-x-0 transition-transform duration-500 pointer-events-none" />
+            <span className="relative">Need a consultation?</span>
+            <svg className="w-4 h-4 relative transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>
-          </motion.a>
+          </motion.button>
         </motion.div>
 
         {/* ── Trust pills ────────────────────────────────────────── */}
@@ -369,6 +362,9 @@ export default function HeroOTC() {
           />
         </div>
       </motion.div>
+
+      {/* ── Contact Modal ────────────────────────────────────────── */}
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </section>
   );
 }
